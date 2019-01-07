@@ -1,0 +1,28 @@
+class Solution {
+   public int[] twoSum(int[] nums, int target) {
+    for (int i = 0; i < nums.length; i++) {
+        for (int j = i + 1; j < nums.length; j++) {
+            if (nums[j] == target - nums[i]) {
+                return new int[] { i, j };
+            }
+        }
+    }
+    throw new IllegalArgumentException("No two sum solution");
+}
+}
+//第一次使用的是二重循环，java的数组可以在return中进行创建同时赋值。
+//时间复杂度是o(n2)。
+public int[] twoSum(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+        if (map.containsKey(complement)) {
+            return new int[] { map.get(complement), i };
+        }
+        map.put(nums[i], i);
+    }
+    throw new IllegalArgumentException("No two sum solution");
+}
+
+//第二种方法采用的是一次哈希表，java创建哈希表的方法为Map<x, x> = new HashMay<>()，在调用其中的方法时里面自带了hash函数
+//如此时间复杂度可降为o(n)，这个方法相当精彩，扫到了使用hash来查找的知识盲区，用空间换了时间
