@@ -1,0 +1,26 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode p = head, q;
+        if(p != null){
+            q = p.next;
+            while(p.next != null && p != null){
+                p.next = q.next;
+                q.next = head;
+                head = q;
+                q = p.next;
+            }
+        }
+        
+        return head;
+    }
+}
+//反转链表，从第一个节点开始，将第一个节点的下一节点置为头节点，直到下一节点为空。
+//java中链表没有指针，似乎只是一个引用。
