@@ -1,0 +1,26 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        ListNode dullNode = new ListNode(0);
+        dullNode.next = head;
+        ListNode pre = dullNode, curr = head, next;
+        while(curr != null && curr.next != null){
+            next = curr.next;
+            curr.next = next.next;
+            next.next = curr;
+            pre.next = next;
+            pre = curr;
+            curr = curr.next;
+        }
+        return dullNode.next;
+    }
+}
+
+//主要是用三个节点轮询，创建一个空头节点可以方便操作
