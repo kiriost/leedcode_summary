@@ -1,0 +1,55 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode[] splitListToParts(ListNode root, int k) {
+        ListNode[] res = new ListNode[k];   //结果数组有k段链表
+        ListNode p = root, q;
+        int sum = 0;      //链表的总长度
+        int remainder = 0;   //余数
+        int num = 0;    //每个数组元素的初始化长度
+        while(p != null){  //统计总数
+            sum++;
+            p = p.next;
+        }
+        p = root; //还原
+        if(k >= sum){   //分割数大于等于链表总长度
+            for(int i = 0; i < k; i++){
+                if(i < sum){
+                    q = p;
+                    p = p.next;
+                    q.next = null;
+                    res[i] = q;
+                }else{
+                    res[i] = null;
+                }
+            }
+            return res;
+        }
+        num = sum  / k;
+        remainder = sum % k;
+        for(int i = 0; i < k; i++){
+            int count = 0; //有余数时数组每个元素长度高1
+            if(i < remainder) count = 1;
+            if(i >= remainder)  count = 0;
+            q = p;
+            for(int j = 1; j <  num + count; j++){
+                p = p.next;
+            }
+            ListNode tempList = p;
+            p = p.next;
+            tempList.next = null;
+            res[i] = q;
+        }
+        return res;
+        
+    }
+}
+
+//代码可以优化，38和39可用一个三元式替代，21的判断可以拉入36的主体循环中
+//思路主要是先求长度，然后除k，除数为平均每个子链表的长度，余数为在该子链表长度基础上多少个链表数要＋1
