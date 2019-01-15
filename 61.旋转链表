@@ -1,0 +1,47 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode rotateOne(ListNode head, int len) {
+        //移动一步
+        int[] listValue = new int[len];
+        ListNode p = head;
+        for(int i = 0; i < len; i++) {
+            listValue[i] = p.val;
+            p = p.next;
+        }
+        p = head.next;
+        for(int i = 0; i < len - 1; i++) {
+            p.val = listValue[i];
+            p = p.next;
+        }
+        head.val = listValue[len - 1];
+        return head;
+    }
+    public ListNode rotateRight(ListNode head, int k) {
+        int len = 0;
+        ListNode p = head;
+        if(p == null || p.next == null) return head;
+        while(p != null) {
+            len++;
+            p = p.next;
+        }
+        k = k % len;
+        for(int i = 0; i < k; i++) {
+            rotateOne(head, len);
+        }
+        return head;
+    }
+}
+
+
+
+//最好想的是借助一个数组将链表的值传入，再通过数组给链表重新赋值
+//还有的方案是先翻转链表，再按k值反转前k项和倒数n-k项
+//这种思想是基于前移k步本质上是从倒数第k项为链表头一直数完整个链表，通过翻转来实现
+//第三种思想是先构造循环链表再断链，从倒数第k项为首项，应该会快很多，目前还没有尝试。
