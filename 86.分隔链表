@@ -1,0 +1,32 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+//  插入排序的思想，维护一个小于x的序列
+struct ListNode* partition(struct ListNode* head, int x) {
+    struct ListNode* dullNode = (struct ListNode *)malloc(sizeof(struct ListNode));
+    dullNode->next = head;
+    dullNode->val = 0;
+    struct ListNode* temp; //暂存需要移动的节点
+    struct ListNode* p = dullNode; //插入暂存节点的值, 从哑节点开始
+    while(p->next !=NULL && p->next->val < x){
+        p = p->next;
+    }
+    struct ListNode* curr = p->next; //向后循环的节点
+    while(curr != NULL && curr->next != NULL) {
+        if(curr->next->val < x) {
+            temp = curr->next;
+            curr->next = curr->next->next;
+            temp->next = p->next;
+            p->next = temp;
+            p = p->next;
+        }else{
+            curr = curr->next;  
+        }
+         
+    }
+    return dullNode->next;
+}
