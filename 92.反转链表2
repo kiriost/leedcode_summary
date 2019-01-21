@@ -1,0 +1,28 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode* reverseBetween(struct ListNode* head, int m, int n) {
+    struct ListNode *p = head, *q;
+    int tmp;
+    for(int i = m - 1; i > 0; i--)
+        p = p->next;
+    //printf("%d", p->val);
+    for(int i = n - m; i > 0; i -= 2){
+        q = p;
+        for(int j = i; j > 0; j--){
+            q = q->next;
+        }
+        tmp = p->val;
+        p->val = q->val;
+        q->val = tmp;
+        p = p->next;
+    }
+    return head;
+}
+
+//从找到第一个的反转点开始，找到下一个反转点，然后反转点前移，继续找下一个对应的点。
+//找对应点的方式是，两个点相隔m-n-2*i，i为反转点前移步数。
