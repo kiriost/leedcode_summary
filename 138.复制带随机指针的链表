@@ -1,0 +1,94 @@
+/**
+ * Definition for singly-linked list with a random pointer.
+ * struct RandomListNode {
+ *     int label;
+ *     struct RandomListNode *next;
+ *     struct RandomListNode *random;
+ * };
+ */
+struct RandomListNode *copyRandomList(struct RandomListNode *head) {
+    struct RandomListNode *p = head, *rlHead;
+    struct RandomListNode *rl = (struct RandomListNode *)malloc(sizeof(struct RandomListNode));
+    /*
+    while(p != NULL){
+        printf("%d ", p->label);
+        if(p->random != NULL)
+            printf("%d\n", p->random->label);
+        else
+            printf("\n");
+        p = p->next;
+    }
+    p = head;
+    */
+    if(p != NULL){
+        rlHead = rl;
+        rl->label = p->label;
+        p = p->next;
+        rl->random = NULL;
+    }else{
+        return head;
+    }
+    while(p != NULL){
+        rl->next = (struct RandomListNode *)malloc(sizeof(struct RandomListNode));
+        rl->random = NULL;
+        rl->next->label = p->label;
+        rl = rl->next;
+        p = p->next;
+    }
+    rl->next = NULL;
+    rl = rlHead;
+    p = head;
+    /*
+    while(rl != NULL){
+        printf("%d ", rl->label);
+        if(rl->random != NULL)
+            printf("%d\n", rl->random->label);
+        else
+            printf("\n");
+        rl = rl->next;
+    }
+    rl = rlHead;
+    */
+    while(p != NULL){
+        //printf("循环 \n");
+        if(p->random != NULL){
+            //printf("进入判断 \n");
+            int count = -1;
+            struct RandomListNode *q = head, *find = rlHead;
+            while(q != NULL){
+                //printf("第二重循环 \n");
+                count++;
+                if(p->random == q)
+                    break;
+                q = q->next;
+            }
+            while(count > 0){
+                find = find->next;
+                count--;
+            }
+            printf("find: %d \n", find->label);
+            rl->random = find;
+        }
+        p = p->next;
+        rl = rl->next;
+    }
+    /*
+    rl = rlHead;
+    while(rl != NULL){
+        printf("%d ", rl->label);
+        if(rl->random != NULL)
+            printf("%d\n", rl->random->label);
+        else
+            printf("\n");
+        rl = rl->next;
+    }
+    */
+    return rlHead;
+}
+
+//思路是用双重循环来对比，做的太复杂了，简单做法是复制链表节点并放于原链表每个元素后，
+//然后复制random指针，新链表为原链表指针所指后一个节点，最后拆开链表。
+
+
+
+
