@@ -1,0 +1,65 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode *detectCycle(struct ListNode *head) {
+    struct ListNode *p = head, *q;
+    
+    while(p != NULL){
+        if(p->next == p)    //循环向自己
+            return p;   
+        q = head;
+        while(q != p){
+            //printf("q: %d \n", q->val);
+            if(q == p->next)
+                return q;
+            q = q->next;
+        }
+        p = p->next;
+    }
+    return NULL;
+}
+
+//用双重循环，每走一步检查到这一步的next有没有和前面的地址相同。
+//借用物理中相对速度的概念，如果有环即跑的快的一定会和跑的慢的第二次相遇，此时即能判定有环
+//且它们的相遇点到入环的距离和head到入环的距离相等，此时再设置一个指针从head走同时slow从相遇点走相遇时即为入环点
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+typedef struct ListNode node;
+struct ListNode *detectCycle(struct ListNode *head) 
+{
+    node* fast = head;
+    node* slow = head;
+    if(head==NULL ||head->next==NULL )
+        return NULL;
+    else
+    {
+        while(fast!=NULL&&fast->next!=NULL)
+    {
+        fast=fast->next->next;
+        slow=slow->next;
+        if(fast == slow)
+            break;
+    }
+    if(fast!=slow)
+        return NULL;
+    else
+    {
+        node* t =head;
+    while(t!=slow)
+    {
+        t= t->next;
+        slow = slow->next;
+    }
+    return t;
+    }
+    }
+}
