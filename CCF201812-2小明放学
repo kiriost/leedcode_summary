@@ -1,0 +1,57 @@
+#include <iostream>
+
+using namespace std;
+
+long long r, y, g;
+long long countTime(long long time, long long a, long long b);
+int main() {
+    long long time = 0;
+    cin >> r >> y >> g;
+    int num = 0;
+    cin >> num;
+    while(num-- != 0)
+    {
+        long long a, b;
+        cin >> a >> b;
+        if(a == 0)
+            time += b;
+        else
+        {
+            //cout << countTime(time, a, b) << endl;
+            time += countTime(time, a, b);
+        }
+    }
+    cout << time;
+    return 0;
+}
+
+long long countTime(long long time, long long a, long long b)
+{
+    //预测经过times通过该路口的时间
+    time = time % (r + y + g);  //排除周期时间
+    switch(a)
+        {
+            case 1:
+                if(time < b)
+                    return b - time;
+                else
+                    countTime(time - b, 3, g);
+                break;
+            case 2:
+                if(time < b)
+                    return (b - time + r);
+                else
+                    countTime(time - b, 1, r);
+                break;
+            case 3:
+                if(time < b)
+                    return 0;
+                else
+                    countTime(time - b, 2, y);
+                break;
+            default:
+                return 0;
+                break;
+        }
+}
+
