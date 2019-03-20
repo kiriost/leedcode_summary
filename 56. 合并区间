@@ -1,0 +1,45 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public: 
+    static bool cmg_leg(const Interval &a, const Interval &b)
+    {
+        return a.start < b.start;
+    }
+    vector<Interval> merge(vector<Interval>& intervals) {
+        //auto a = intervals.begin();
+        //cout << j;
+        //cout << intervals.size() << endl;
+        if(intervals.size() == 0 || intervals.size() == 1)
+            return intervals;
+        sort(intervals.begin(), intervals.end(), cmg_leg);
+        auto a = intervals;
+        int i = 0;
+        while(i < a.size() - 1)
+        {
+            //cout << a.size() - 1 << " i: " << i <<endl;
+            //cout << "a[i].end: " << a[i].end << " a[i + 1].start: " << a[i + 1].start << endl;
+            if(a[i].end >= a[i + 1].start)
+            {
+                
+                if(a[i].end < a[i + 1].end)
+                    a[i].end = a[i + 1].end;
+                a.erase(a.begin() + i + 1);
+         
+                continue;
+            }
+            i += 1;
+        }
+        return a;
+    }
+};
+
+
+//先用sort对start排序，然后用end和下一个start做比对，大于则该合并，注意用辅助数组可以简化算法，并且注意持续比较，而非比一次操作一次。
