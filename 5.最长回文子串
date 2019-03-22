@@ -1,0 +1,60 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        //cout << s.length();
+        if(s.empty())
+            return s;
+        int len = s.length();
+        int resCon = 1;
+        int begin = 0;
+        //cout << "len: " << len << " s: " << s <<endl;
+        for(int i = 0; i < len; i++)
+        {
+            //cout << "1" << endl;
+            int pre = i - 1;
+            int next = i + 1;
+            //string tmp;
+            //tmp = s[i];
+            int tmpCon = 1;
+            while(next < len && s[i] == s[next])
+            {
+                //cout << "2 len: " << len << endl;
+                tmpCon ++;
+                if(tmpCon > resCon)
+                {
+                    resCon = tmpCon;
+                    begin = i;
+                }
+                next++;
+            }
+            //if(pre >= 0 && next < len )
+            //{
+                //cout << "spre: " << s[pre] << " snext: " << s[next] <<endl;
+                //cout << "pre: " << pre << " next: " << next << endl;
+            while(pre >= 0 && next < len && s[pre] == s[next])
+            {
+                //cout << "3" <<endl;
+                tmpCon += 2;
+                if(resCon < tmpCon)
+                {
+                    resCon = tmpCon;
+                    begin = pre;
+                }
+                pre--;
+                next++;
+            }
+            //}
+        }
+        string result(s, begin, resCon);
+        return result;
+    }
+};
+
+
+//一开始直接用字符串来复制中间结果，结果超了内存
+//后来直接用数字存初始位置和长度进行了改进
+//string res(s, begin, len)可以从指定位置和长度进行初始哈
+//s.substr(str, n)可以返回str位置的n个字符
+
+
+
