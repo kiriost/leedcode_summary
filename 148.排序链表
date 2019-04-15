@@ -1,0 +1,58 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* merge(ListNode *p, ListNode *q)
+    {
+        ListNode dummyHead(0);
+        ListNode *cur = &dummyHead;
+        while(p != NULL && q != NULL)
+        {
+            if(p->val < q->val)
+            {
+                cur->next = p;
+                p = p->next;
+            }
+            else{
+                cur->next = q;
+                q = q->next;
+            }
+            cur = cur->next;
+        }
+        if(p != NULL)
+        {
+            cur->next = p;
+        }
+        if(q != NULL)
+        {
+            cur->next = q;
+        }
+        return dummyHead.next;
+    }
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head->next == NULL)
+            return head;
+        ListNode *fast = head, *slow = head, *pre = NULL;
+        while(fast != NULL && fast->next != NULL)
+        {
+            pre = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        pre->next = NULL;
+        ListNode *l1 = sortList(head);
+        ListNode *l2 = sortList(slow);
+        return merge(l1, l2);
+    }
+};
+
+
+
+//归并排序的链表实现，主要是快慢指针，并且要记得切断链表
+//还差非递归实现版本
