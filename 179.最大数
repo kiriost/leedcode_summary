@@ -1,0 +1,121 @@
+class Solution {
+    //基本思路是插入排序
+    //但是每次比较只比较第一位数
+    //第一位数大的排在前面，小的排在后面
+    //第一位数相等则比较下一位数
+    //第二位数大的排前面，小的排后面
+    //如果一个有第二位数一个没有，
+    //有第二位数的数和前一位数做比较，
+    //小于等于前一位数则排后面否则排前面
+    
+    //思路出错。。。 [12,121]
+public:
+    bool compare(int a, int b)
+    {//b较大返回true
+        if(a == 0)
+            return true;
+        if(b == 0)
+            return false;
+        vector<int> sa;
+        vector<int> sb;
+        //cout << "调用函数" << endl;
+        //cout << "a前: " << a << endl;
+        while(a / 10)
+        {
+            //cout << "a: " << a << endl;
+            sa.insert(sa.begin(), a % 10);
+            a = a / 10;   
+        }
+            
+        while(b / 10)
+        {
+            sb.insert(sb.begin(), b % 10);
+            b = b / 10;
+        }
+        sa.insert(sa.begin(), a);
+        sb.insert(sb.begin(), b);
+        //cout << "sb " << sb[0] << endl;
+        //cout << "比较前" << endl;
+        int cp = 0;
+        while(cp < sa.size() && cp < sb.size())
+        {
+            if(sa[cp] < sb[cp])
+            {
+                return true;
+                //cout << "sb" << sb[cp] << endl;
+            }
+            if(sa[cp] > sb[cp])
+            {
+                return false;
+                //cout << "sb" << sb[cp] << endl;
+            }
+                
+            
+            if(sa[cp] == sb[cp])
+                cp++;
+        }
+        if(cp < sa.size())
+        {
+            if(sa[cp] <= sa[0])
+                return true;
+            else 
+                return false;
+        }
+        if(cp < sb.size())
+        {
+            if(sb[cp] < sb[0])
+                return false;
+            else
+                return true;
+        }
+        return false;
+    }
+    string largestNumber(vector<int>& nums) {
+        //nums = {};
+        for(int i = 0; i < nums.size() - 1; i++)
+        {
+            //cout << "numsi: " << nums[i] << endl;
+            //cout << "for循环" << endl;
+            int tmp = nums[i+1];
+            int flag = i;
+            while(flag >= 0 && compare(nums[flag], tmp))
+            {
+                nums[flag + 1] = nums[flag];
+                flag--;
+            }
+            nums[flag + 1] = tmp;
+            //cout << "numsi: " << nums[i] << endl;
+            //cout << "第" << i+1 << "趟：";
+            //for(int j = 0; j < nums.size(); j++)
+            //{
+                //cout << nums[j] << " ";    
+            //}
+            //cout << endl;
+        }
+        string res = "";
+        if(nums[0] == 0)
+            return "0";
+        for(int i = 0; i < nums.size(); i++)
+        {
+            res += to_string(nums[i]);
+        }
+        //cout << res;
+        return res;
+        
+    }
+};
+//以上为错误想法
+    bool compare(int a, int b)
+    {//b较大返回true
+        string sa = to_string(a), sb = to_string(b);
+        string res1 = sa + sb;
+        string res2 = sb + sa;
+        if(res1 > res2)
+            return false;
+        else
+            return true;
+    }
+    //正确的比较函数，将a，b转换为字符串
+    //比较a + b和b + a的大小
+
+
