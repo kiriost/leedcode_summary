@@ -1,0 +1,49 @@
+class Solution {
+public:
+    static bool sfun(string a, string b)
+    {
+        if(a.length() == b.length())
+            return a < b;
+        return a.length() > b.length();
+    }
+    bool matching(string s, string a)
+    {
+        //判断函数
+        if(a.length() > s.length())
+            return false;
+        int orin = 0;   //标志位，让比较一直向后
+        for(int i = 0; i < a.length(); i++)
+        {
+            int flag = 0;
+            for(int j = orin; j < s.length(); j++)
+            {
+                if(a[i] == s[j])
+                {
+                    //cout << "Find" << endl;
+                    s[j] = 'A';
+                    flag = 1;
+                    orin = j;
+                    break;
+                }
+            }
+            if(flag == 0)
+                return false;
+        }
+        return true;
+        //for (int i = 0, j = 0, size1 = s.length(), size2 = sub.length(); i < size1; ++i) {
+           // if (s[i] == sub[j] && ++j == size2) return true;
+        //}
+        //return false;
+        //别人的高效代码
+    }
+    string findLongestWord(string s, vector<string>& d) {
+        //d = {"ale","apple","monkey","aonkey","plea"};
+        sort(d.begin(), d.end(), sfun);
+        for(int i = 0; i < d.size(); i++)
+        {
+            if(matching(s, d[i]))
+                return d[i];
+        }
+        return "";
+    }
+};
