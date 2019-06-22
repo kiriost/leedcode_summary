@@ -1,0 +1,45 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        ListNode* p = head;    //指向奇数点插入处
+        ListNode* q = NULL;
+        ListNode* pre = NULL;
+        if(p != NULL && p->next != NULL && p->next->next != NULL)
+        {
+            pre = head->next;     //下一个偶节点
+            q = p->next->next;    //指向下一个奇节点
+        }
+        else
+            return head;
+        
+        ListNode* next = NULL; //指向下下个奇节点，防止断链
+        while(q != NULL)
+        {
+            //next = NULL;    //每次循环清空next
+            // if(q->next != NULL && q->next->next != NULL)
+            //     next = q->next->next;
+            //ListNode* tmp = q;
+            pre->next = q->next;
+            q->next = p->next;
+            p->next = q;
+            pre = pre->next;
+            p = p->next;
+            q = NULL;
+            if(pre != NULL)
+                q = pre->next;
+        }
+        return head;
+    }
+    
+    
+    
+    //更有意思的想法是分奇偶然后连接
+};
