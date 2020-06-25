@@ -1,0 +1,34 @@
+//错误解法，使用了贪心的思想解动态规划问题。
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int loc = 0;
+        if(wordDict.size() == 0)
+            return false;
+        while(loc < s.length()) {
+            for(int i = 0; i < wordDict.size(); i++) {
+                if(s.charAt(loc) == wordDict.get(i).charAt(0)) {
+                    if(this.compare(s, wordDict.get(i), loc)) {
+                        // System.out.println(this.compare(s, wordDict.get(i), loc));
+                        loc = loc + wordDict.get(i).length();
+                        break;
+                    }      
+                }
+                if(i == wordDict.size() -1 && s.charAt(loc) != wordDict.get(wordDict.size() - 1).charAt(0))
+                    return false;
+            }
+            // if(loc != s.length())
+            //     return false;
+        }
+        return true;
+    }
+
+    public boolean compare(String s, String aim, int loc) {
+        //在s的loc位置起，比较后面是否和aim重叠
+        for(int i = 0; i < aim.length(); i++) {
+            if(aim.charAt(i) != s.charAt(loc + i)) 
+                return false;
+        }
+        return true;
+    }
+}
+
