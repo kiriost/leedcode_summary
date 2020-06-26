@@ -1,0 +1,33 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode removeDuplicateNodes(ListNode head) {
+        ListNode p = head;
+        if(p == null)
+            return head;
+        while(p != null) {
+            ListNode q = p.next;
+            ListNode t = p;
+            while(q != null) {
+                if(p.val == q.val) {
+                    t.next = q.next;
+                    q = q.next;
+                }
+                else {
+                    t = t.next;
+                    q = q.next;
+                }
+            }
+            p = p.next;
+        }
+        return head;
+    }
+}
+
+//在可以用空间的情况下能使用哈希表处理，也可用排序算法排序后遍历一遍删除所有重复节点
