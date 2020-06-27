@@ -1,0 +1,16 @@
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        HashSet res = new HashSet();
+        for(int i = 0; i < nums.length; i++) {
+            res.add(nums[i]);
+        }
+        int cont = 1;
+        while(!res.add(cont))
+            cont++;
+        return cont;
+    }
+}
+
+//并非满足要求的解法
+//可在原数组中就地标记
+//或采取将每个数放在正确位置，最后遍历若有不符合则说明该位置为最小正数。
