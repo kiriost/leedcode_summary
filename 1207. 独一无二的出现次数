@@ -1,0 +1,18 @@
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        if(arr.length < 2)
+            return true;
+        Map<Integer, Integer> uniSum = new HashMap<Integer, Integer>();
+        for(int i = 0; i < arr.length; i++) {
+            Integer freq = uniSum.get(arr[i]);
+            uniSum.put(arr[i], freq == null ? 1 : freq + 1);
+        }
+        Set<Integer> num = new HashSet<Integer>(uniSum.values());
+        if(num.size() < uniSum.size())
+            return false;
+        else
+            return true;
+    }
+}
+
+//使用了hashmap和hashset，对这两个api底层还缺乏了解
