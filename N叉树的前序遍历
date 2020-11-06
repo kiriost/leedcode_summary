@@ -1,0 +1,41 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+    public List<Integer> preorder(Node root) {
+        List<Integer> res = new ArrayList<Integer>();
+        if(root == null)
+            return res;
+        Stack<Node> que = new Stack<Node>();
+        que.push(root);
+        while(!que.isEmpty()) {
+            Node nowNode = que.pop();
+            res.add(nowNode.val);
+            for(int i = nowNode.children.size() - 1; i >= 0; i--) {
+                Node node = nowNode.children.get(i);
+                que.push(node);
+            }
+        }
+        return res;
+    }
+}
+
+
+//主要注意前序遍历不用递归的话得将孩子节点逆序推入栈中
+//Collections.reverse(node.children);是一个小trick，可以反转列表中元素顺序
