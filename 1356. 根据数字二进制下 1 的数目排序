@@ -1,0 +1,31 @@
+class Solution {
+    public int[] sortByBits(int[] arr) {
+        int len = arr.length;
+        if(len < 2)
+            return arr;
+        for(int i = 0; i < len - 1; i++) {
+            int oneNum = getOne(arr[i]);
+            for(int j = i + 1; j < len; j++) {
+                if(oneNum > getOne(arr[j]) || (oneNum == getOne(arr[j]) && arr[i] > arr[j])) {
+                    int tmp = arr[i];
+                    arr[i] = arr[j];
+                    oneNum = getOne(arr[i]);
+                    arr[j] = tmp;
+                }
+            }
+        }
+        return arr;
+    }
+    public int getOne(int num) {
+        //求一个数字中二进制1的数目
+        if(num < 1)
+            return 0;
+        int res = 0;
+        while(num > 0) {
+            if(num % 2 == 1)
+                res++;
+            num = num / 2;
+        }
+        return res;
+    }
+}
