@@ -1,0 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode[] listOfDepth(TreeNode tree) {
+        List<ListNode> res = new LinkedList<ListNode>();
+        Queue<TreeNode> que = new LinkedList<TreeNode>();
+        if(tree == null)
+            return new ListNode[0];
+        que.offer(tree);
+        while(!que.isEmpty()) {
+            ListNode dummyNode = new ListNode(-1), pre = dummyNode;
+            int len = que.size();
+            for(int i = 0; i < len; i++) {
+                TreeNode nowNode = que.poll();
+                ListNode q = new ListNode(nowNode.val);
+                pre.next = q;
+                pre = q;
+                if(nowNode.left != null)
+                    que.offer(nowNode.left);
+                if(nowNode.right != null)
+                    que.offer(nowNode.right);;
+            }
+            res.add(dummyNode.next);
+        }
+        ListNode[] ans = res.toArray(new ListNode[res.size()]);
+        return ans;
+
+    }
+}
+
+
+
+//层序遍历，每次向队列中添加元素放在while中的for循环中，能解决单个while循环无法统计每层节点个数的问题。
+//while中增加for循环时，其实总的循环次数并没有变，相当于for循环对while循环做了一次打包，将本来全在一个while循环的节点，打包为每次一层一层的循环
+//由此可以总结出，对于非固定的循环次数，既循环次数再循环体中变化的循环，可以把使循环次数增加的代码包裹一重循环来进行统计每次增加了多少次的循环以达到特殊目的
+//解决数组必须提前定义好大小的问题小trick，先使用list进行定义，然后每次增加都用list.add(x)来添加，最后再用list的toArray()方法转换为数组
+//toArray()的参数需要传递一个目标类型的数组，该数组的大小大于等于list的长度
