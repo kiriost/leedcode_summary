@@ -1,0 +1,66 @@
+class Solution {
+    Map<String, Integer> wordId = new HashMap<String, Integer>();   //对每一个单词建立一个序号与之对应
+    List<List<Integer>> edge = new ArrayList<List<Integer>>();  //一个二维数组记录边的连接情况
+    int nodeIndex = 0;  //记录单词号
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        for(String i : wordList)
+            //生成图
+            addEdge(i);
+        addEdge(beginWord);
+        if(!wordId.containsKey(endWord))
+            return 0;
+        int beginId = wordId.get(beginWord);
+        int endId = wordId.get(endWord);
+        int[] dis = new int[nodeIndex]; //记录首词到目标词距离，同时也是广度优先的状态记录数组
+        Arrays.fill(dis, Integer.MAX_VALUE);
+        dis[beginId] = 0;
+        Queue<Integer> que = new LinkedList<Integer>();
+        que.offer(beginId);
+        while(!que.isEmpty()) {
+            //广度优先遍历，需要用到栈
+            int nowId = que.poll();
+            if(nowId == endId)
+                return dis[nowId] / 2 + 1;
+            for(int i : edge.get(nowId)) {
+                if(dis[i] == Integer.MAX_VALUE) {
+                    dis[i] = dis[nowId] + 1;
+                    que.offer(i);
+                }
+            }
+        }
+        return 0;
+    }
+
+    public void addEdge(String word) {
+        addWords(word);
+        int id1 = wordId.get(word);
+        char[] wordArray = word.toCharArray();
+        int len = wordArray.length;
+        for(int i = 0; i < len; i++) {
+            //循环对单词中每一个字符替换一位,并增加边行成图
+            char tmp = wordArray[i];
+            wordArray[i] = '*';
+            String newWord = new String(wordArray);
+            addWords(newWord);
+            int id2 = wordId.get(newWord);
+            edge.get(id1).add(id2);
+            edge.get(id2).add(id1);
+            wordArray[i] = tmp;
+        }
+    }
+
+    public void addWords(String word) {
+        if(!wordId.containsKey(word)) {
+            wordId.put(word, nodeIndex);
+            nodeIndex++;
+            edge.add(new ArrayList<Integer>()); //在边集中增加一行，此行id和词的索引正好对应
+            //addEdge(word);    //增加边的时候会增加新单词，会存在反复调用的问题so应该在增加边函数中调用增加单词
+        }
+    }
+}
+
+
+//Arrays.fill(dis, Integer.MAX_VALUE);对数组进行填充，将dis数组全填充为int的MAX
+//char[] array = word.toCharArray();该函数可以将字符串转换为字符数组，再用数组的length特性可得出字符串的长度
+//new String(array)能把字符串数组转换为一个完整的字符串
+
