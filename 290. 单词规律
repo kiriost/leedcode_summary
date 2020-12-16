@@ -1,0 +1,47 @@
+class Solution {
+    public boolean wordPattern(String pattern, String s) {
+        String[] sp = s.split(" ");
+        HashMap<Character, ArrayList<Integer>> record = new HashMap<Character, ArrayList<Integer>>();
+        char[] pat = pattern.toCharArray();
+        if(sp.length != pat.length)
+            return false;
+        for(int i = 0; i < pat.length; i++) {
+            ArrayList<Integer> list = record.getOrDefault(pat[i], new ArrayList<Integer>());
+            list.add(i);
+            record.put(pat[i], list);
+        }
+        for(int i = 0; i < sp.length; i++) {
+            ArrayList<Integer> list = record.get(pat[i]);
+            for(int j : list) {
+                // System.out.println(j);
+                // System.out.println(sp[i]);
+                // System.out.println(sp[j]);
+                if(!sp[i].equals(sp[j])) {
+                    // System.out.println(sp[i]);
+                    // System.out.println(sp[j]);
+                    return false;
+                }
+                    
+            }
+        }
+        for(Character c1 : record.keySet()) {
+            ArrayList<Integer> list1 = record.get(c1);
+            String s1 = sp[list1.get(0)];
+            for(Character c2 : record.keySet()) {
+                if(c1.equals(c2))
+                    continue;
+                ArrayList<Integer> list2 = record.get(c2);
+                String s2 = sp[list2.get(0)];
+                if(s1.equals(s2))
+                    return false;
+            }
+        }
+        // for(String one : sp)
+        //     System.out.println(one);
+        return true;       
+    }
+}
+
+//可以使用两个hashmap，分别存字符串对应字符，和字符对应字符串，类别数学中的双向映射，可以达到用空间换时间的目的
+//双向映射与双哈希表的关系
+//String类型比较，若用==则比较的是内存位置，用equals才是字符间对比
