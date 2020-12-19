@@ -1,0 +1,18 @@
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        for(int i = 0; i < n / 2; i++) {
+            for(int j = i; j < n - 1; j++) {
+                int tmp1 = matrix[n - j, i];    //上一个的值
+                int tmp2;    //当前值    
+                int index = 3;  //控制循环次数
+                int x = i , y = j;
+                while(index-- >= 0) {
+                    tmp2 = matrix[x][y];
+                    matrix[x][y] = tmp1;
+                    tmp1 = tmp2;
+                }
+            }  
+        }
+    }
+}
