@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        if(root == null)
+            return res;
+        int index = 1;  //标识当前方向，0为从左到右，1为从右向左
+        Queue<TreeNode> tree = new LinkedList<TreeNode>();
+        tree.offer(root);
+        while(!tree.isEmpty()) {
+            index = index == 0 ? 1 : 0;
+            int nowLen = tree.size();
+            List<Integer> tmp = new ArrayList<Integer>();
+            for(int i = 0; i < nowLen; i++) {
+                TreeNode tmpNode = tree.poll();
+                tmp.add(tmpNode.val);  
+                if(tmpNode.left != null)
+                    tree.offer(tmpNode.left);
+                if(tmpNode.right != null)
+                    tree.offer(tmpNode.right);
+            }
+            if(index == 1)
+                Collections.reverse(tmp);
+            res.add(tmp);
+        }
+        return res;
+    }
+}
+
+//Queue类型没有遍历方法
